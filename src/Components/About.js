@@ -2,7 +2,7 @@ import React from 'react';
 
 function About() {
 	return (
-		<article id='about' className=' flex flex-col  gap-3 py-10 px-2'>
+		<article className=' flex flex-col  gap-3 py-10 px-2' id='about'>
 			<h4 className=' lg:hidden self-center text-[7vw] mb-5  font-semibold'>
 				Hey, I am <span className=' underline  underline-offset-4  py-2 decoration-[#ff8800]'>Rohit Bahuguna</span>
 			</h4>

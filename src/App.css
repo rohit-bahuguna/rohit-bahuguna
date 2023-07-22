@@ -4,13 +4,15 @@
 
 .dropShadow {
     filter:drop-shadow(black 0px 0px 6px);
-   
-    
     
 }
 
+.Shadow{
+     filter:drop-shadow(rgb(169, 167, 167) 4px 3px 2px);
+}
+
 .imageShadow {
-     filter:drop-shadow(#ff8800 12px -2px 0px);
+     filter:drop-shadow(#ff8800 10px -2px 0px);
 }
 
 .imageShadow2{
