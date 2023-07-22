@@ -4,7 +4,7 @@ Hi 👋 My name is Rohit Bahuguna
 I am a Student and Full Stack Developer 
 ------------------------
 
-* 🌍  I'm based in India [Visit Website](https://rohit-bahuguna.netlify.app/)
+* 🌍  I'm based in India [Visit Website](https://rohitbahuguna.vercel.app)
 * ✉️  You can contact me at [rohitbahuguna.work@gmail.com](mailto:rohitbahuguna.work@gmail.com)
 * 🧠  I'm learning MERN Stack and Data Structure Algorithms in Java
 * 🤝  I'm open to collaborating on interesting projects
