@@ -1,12 +1,11 @@
 Hi 👋 My name is Rohit Bahuguna
 =============================
 
-I am a Student and Full Stack Developer 
+I am a Full Stack Developer 
 ------------------------
 
 * 🌍  I'm based in India [Visit Website](https://rohitbahuguna.vercel.app)
 * ✉️  You can contact me at [rohitbahuguna.work@gmail.com](mailto:rohitbahuguna.work@gmail.com)
-* 🧠  I'm learning MERN Stack and Data Structure Algorithms in Java
 * 🤝  I'm open to collaborating on interesting projects
 * ⚡  I am enthusiast about open source projects
 <br>
