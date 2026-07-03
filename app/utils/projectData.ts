@@ -75,7 +75,7 @@ export const projects: Project[] = [
       "Wishlist Management",
     ],
     githubUrl: "https://github.com/rohit-bahuguna/your-store",
-    liveUrl: "https://yourstore-rohit.vercel.app/",
+    liveUrl: "https://store.rohitbahuguna.online",
   },
   {
     background: "red",
@@ -104,7 +104,7 @@ export const projects: Project[] = [
       "Great user experience",
     ],
     githubUrl: "https://github.com/rohit-bahuguna/your-story",
-    liveUrl: "https://yourstory.vercel.app/",
+    liveUrl: "https://yourstory.rohitbahuguna.online",
   },
   
 ];
