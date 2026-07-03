@@ -25,8 +25,8 @@ const contactInfo = [
   {
     Icon: HiOutlineMail,
     label: "Email Address",
-    value: "rohitbahuguna.work@gmail.com",
-    href: "mailto:rohitbahuguna.work@gmail.com",
+    value: "contact@rohitbahuguna.online",
+    href: "mailto:contact@rohitbahuguna.online",
   },
   {
     Icon: HiOutlineLocationMarker,
