@@ -10,26 +10,35 @@ interface JourneyItem {
 const journey: JourneyItem[] = [
   {
     year: "2021",
-    title: "Java Fundamentals",
-    description: "Built key foundations in object-oriented programming, data structures, and algorithms.",
+    title: "Started Web Development",
+    description:
+      "Began learning Java, JavaScript, HTML, CSS, and programming fundamentals while building small projects and strengthening problem-solving skills.",
   },
   {
     year: "2022",
-    title: "Full Stack MERN",
-    description: "Expanded learning to JavaScript, Node.js, Express, databases, and client-side styling.",
+    title: "Full Stack Development",
+    description:
+      "Mastered React, Node.js, Express, MongoDB, Angular, and MySQL while developing complete web applications and exploring modern backend architecture.",
   },
   {
     year: "2023",
-    title: "Shipping Web Portals",
-    description: "Designed, built, and shipped complex responsive web projects with cart and auth systems.",
+    title: "Professional Software Engineer",
+    description:
+      "Joined Rabblesoft as a Full Stack Engineer, delivering production-ready business applications using React, JavaScript, REST APIs, and database-driven architectures.",
   },
   {
-    year: "2024+",
-    title: "Next.js & TypeScript",
-    description: "Focusing on optimized architectures, server components, and production-ready applications.",
+    year: "2024",
+    title: "Senior Full Stack Engineer",
+    description:
+      "Promoted at QBH Solution to Senior Software Engineer, leading development of scalable ERP modules with Angular, NestJS, TypeScript, MySQL, and enterprise-grade architectures.",
+  },
+  {
+    year: "2025+",
+    title: "Building Scalable Products",
+    description:
+      "Focused on Next.js, SEO-first applications, reusable architectures, CMS development, and high-performance full-stack products while expanding open-source projects and personal ventures.",
   },
 ];
-
 const About = () => {
   return (
     <section id="about" className="bg-[--bg] py-14">
