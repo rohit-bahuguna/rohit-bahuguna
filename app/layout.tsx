@@ -9,7 +9,7 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin"], 
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Rohit Bahuguna" }],
 };
 
-export default function RootLayout({
+export default function RootLayout({ 
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
