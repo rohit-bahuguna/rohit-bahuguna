@@ -4,7 +4,7 @@ import Link from "next/link";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { HiOutlineArrowLeft, HiOutlineDownload, HiOutlineDocumentText } from "react-icons/hi";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function ResumePage() {
   let resumeUrl = "https://drive.google.com/file/d/1J0kPC3TBdtLQpOvORigxMQtoilkYzL4H/view?usp=sharing";

@@ -68,9 +68,10 @@ export async function POST() {
 
     // 4. Invalidate local Next.js cache (On-Demand ISR)
     revalidatePath("/");
+    revalidatePath("/resume");
 
     // 5. Purge Cloudflare Edge Cache worldwide
-    const cfResult = await purgeCloudflareCache(["/"]);
+    const cfResult = await purgeCloudflareCache(["/", "/resume"]);
 
     return NextResponse.json({
       success: true,
