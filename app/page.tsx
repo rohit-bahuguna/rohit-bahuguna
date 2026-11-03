@@ -10,8 +10,7 @@ import AdminPreviewBanner from "@/app/components/AdminPreviewBanner";
 import prisma from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 3600; // Incremental Static Regeneration (1h default, invalidated on publish)
 
 interface PageProps {
   searchParams: Promise<{ preview?: string }>;
