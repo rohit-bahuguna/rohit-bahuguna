@@ -1,0 +1,33 @@
+services:
+  portfolio_app:
+    image: ghcr.io/rohit-bahuguna/rohit-bahuguna:latest
+    container_name: portfolio_app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3005:3000"
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=file:/app/data/portfolio.db
+    networks:
+      - portfolio_net
+
+  portfolio_tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: portfolio_tunnel
+    restart: unless-stopped
+    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - portfolio_app
+    networks:
+      - portfolio_net
+
+networks:
+  portfolio_net:
+    name: portfolio_network
+    driver: bridge

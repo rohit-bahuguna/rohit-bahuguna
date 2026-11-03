@@ -1,34 +1,34 @@
 "use client";
 
 import React from "react";
-import { projects } from "@/app/utils/projectData";
-import ProjectCard from "./ProjectCard";
+import ProjectCard, { ProjectItemData } from "./ProjectCard";
 
-const Project = () => {
+interface ProjectProps {
+  projects?: ProjectItemData[];
+}
+
+export default function Project({ projects = [] }: ProjectProps) {
   return (
-    <section id="projects" className="bg-[--bg] py-12">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-10 text-left">
-          <span className="mono text-[10px] font-black uppercase tracking-wider text-black border-2 border-black bg-white px-2.5 py-1 rounded shadow-[2px_2px_0px_#000]">
-            Work
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-black tracking-tight mt-4">
+    <section id="projects" className="py-8 md:py-10 border-b border-border/40 scroll-mt-16">
+      <div className="max-w-4xl mx-auto px-6 space-y-6">
+        <div>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+            Showcase
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             Featured Projects
           </h2>
         </div>
 
-        <div className="flex flex-col gap-8">
-          {projects.map((project, idx) => (
+        <div className="flex flex-col gap-4 sm:gap-5">
+          {projects.map((project) => (
             <ProjectCard
-              key={project.heading}
+              key={project.id || project.title}
               project={project}
-              reverse={idx % 2 !== 0}
             />
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Project;
+}

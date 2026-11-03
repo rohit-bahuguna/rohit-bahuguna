@@ -1,0 +1,87 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. Admin Authentication
+model AdminUser {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// 2. Section Configurations (Supports Draft & Live States)
+model SiteConfig {
+  key       String   // 'header', 'hero', 'about', 'theme', 'contact', 'footer'
+  state     String   // 'live' or 'draft'
+  data      String   // JSON stringified configuration
+  updatedAt DateTime @updatedAt
+
+  @@id([key, state])
+}
+
+// 3. Projects Showcase (Draft & Live Support)
+model Project {
+  id          String   @id @default(uuid())
+  state       String   @default("live") // 'live' or 'draft'
+  title       String
+  description String
+  tags        String   // JSON string array of tags
+  imageUrl    String?
+  liveUrl     String?
+  githubUrl   String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 4. Skills Taxonomy
+model Skill {
+  id        String   @id @default(uuid())
+  state     String   @default("live") // 'live' or 'draft'
+  name      String
+  category  String   // 'Frontend', 'Backend', 'Database', 'Tools'
+  iconUrl   String?
+  level     Int?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 5. Media Asset Management
+model Media {
+  id           String   @id @default(uuid())
+  name         String   // Original filename
+  fileName     String   @unique // Sanitized unique disk filename
+  url          String   // e.g., '/uploads/1730000000-resume.pdf'
+  mimeType     String   // 'image/png', 'application/pdf', etc.
+  sizeBytes    Int
+  width        Int?
+  height       Int?
+  createdAt    DateTime @default(now())
+}
+
+// 6. Interaction Telemetry & Visitor Analytics
+model AnalyticsEvent {
+  id          String   @id @default(uuid())
+  eventType   String   // 'resume_download', 'resume_view', 'project_click', 'cta_click', 'page_view'
+  targetId    String?  // e.g. project ID or button label
+  targetUrl   String?  // destination URL or document path
+  ipAddress   String?
+  country     String?
+  city        String?
+  browser     String?
+  os          String?
+  deviceType  String?  // 'desktop', 'mobile', 'tablet'
+  referrer    String?
+  isBot       Boolean  @default(false)
+  clientType  String   @default("human") // 'human', 'bot', 'crawler'
+  createdAt   DateTime @default(now())
+}

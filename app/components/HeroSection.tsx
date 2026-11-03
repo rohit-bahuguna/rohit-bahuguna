@@ -2,29 +2,53 @@
 
 import React from "react";
 import Image from "next/image";
-import { AiFillGithub, AiFillLinkedin, AiFillInstagram } from "react-icons/ai";
+import Link from "next/link";
+import { AiFillGithub, AiFillLinkedin, AiFillInstagram, AiFillTwitterCircle } from "react-icons/ai";
+import { HiOutlineMail, HiOutlineArrowRight } from "react-icons/hi";
 
-const socials = [
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/rohit--bahuguna",
-    Icon: AiFillLinkedin,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/rohit-bahuguna",
-    Icon: AiFillGithub,
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/the_rohit_bahuguna",
-    Icon: AiFillInstagram,
-  },
-];
+export interface HeroData {
+  badgeText?: string;
+  greeting?: string;
+  nameHighlight?: string;
+  nameSurname?: string;
+  bio?: string;
+  portraitImage?: string;
+  ctaProjects?: { label: string; target: string };
+  ctaResume?: { label: string; url: string; target?: string };
+  socials?: Array<{ label: string; href: string; icon?: string }>;
+}
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  data?: HeroData | null;
+}
+
+function getSocialIcon(iconName?: string) {
+  switch (iconName?.toLowerCase()) {
+    case "aifilllinkedin":
+    case "linkedin":
+      return AiFillLinkedin;
+    case "aifillgithub":
+    case "github":
+      return AiFillGithub;
+    case "aifillinstagram":
+    case "instagram":
+      return AiFillInstagram;
+    case "aifilltwitter":
+    case "twitter":
+    case "x":
+      return AiFillTwitterCircle;
+    case "email":
+    case "mail":
+      return HiOutlineMail;
+    default:
+      return AiFillGithub;
+  }
+}
+
+export default function HeroSection({ data }: HeroSectionProps) {
   const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
+    const cleanId = id.replace("#", "");
+    const element = document.getElementById(cleanId);
     if (element) {
       const headerOffset = 70;
       const elementPosition = element.getBoundingClientRect().top;
@@ -33,83 +57,108 @@ const HeroSection = () => {
     }
   };
 
+  const badgeText = data?.badgeText;
+  const greeting = data?.greeting;
+  const nameHighlight = data?.nameHighlight;
+  const nameSurname = data?.nameSurname;
+  const bio = data?.bio;
+  const portrait = data?.portraitImage;
+  const ctaProjects = data?.ctaProjects;
+  const ctaResume = data?.ctaResume;
+  const socials = data?.socials || [];
+
   return (
-    <section className="bg-[--bg] pt-28 pb-14 overflow-hidden">
+    <section className="pt-20 pb-8 md:pt-24 md:pb-10 overflow-hidden border-b border-border/40">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
-          
-          {/* Left Text Column */}
-          <div className="flex-grow text-center md:text-left">
-            <span className="mono text-[10px] font-extrabold uppercase tracking-wider text-black border-2 border-black bg-white px-3.5 py-1.5 rounded inline-block shadow-[2.5px_2.5px_0px_#000]">
-              Full Stack Engineer
-            </span>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-black leading-[1.25] mt-5 mb-5 tracking-tight">
-              Hi, I&apos;m{" "}
-              <span className="accent-line text-white">
-                Rohit
-              </span>{" "}
-              Bahuguna
-            </h1>
-            
-            <p className="text-xs sm:text-sm text-slate-800 mb-6 max-w-lg mx-auto md:md-0 leading-relaxed font-semibold">
-              I specialize in building full-stack web applications using the MERN stack. Focused on delivering robust backend architectures alongside highly optimized interfaces.
-            </p>
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-16">
+          {/* Narrative Column */}
+          <div className="flex-1 text-center md:text-left space-y-5">
+            {badgeText && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                {badgeText}
+              </span>
+            )}
+
+            {(greeting || nameHighlight || nameSurname) && (
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15]">
+                {greeting}{" "}
+                {nameHighlight && (
+                  <span className="text-foreground underline decoration-border decoration-2 underline-offset-6">
+                    {nameHighlight}
+                  </span>
+                )}{" "}
+                {nameSurname}
+              </h1>
+            )}
+
+            {bio && (
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl">
+                {bio}
+              </p>
+            )}
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
-              <button
-                onClick={() => scrollTo("projects")}
-                className="btn btn-filled"
-              >
-                Projects
-              </button>
-              <a
-                href="https://drive.google.com/file/d/1J0kPC3TBdtLQpOvORigxMQtoilkYzL4H/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline"
-              >
-                Resume
-              </a>
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start pt-2">
+              {ctaProjects && (
+                <button
+                  onClick={() => scrollTo(ctaProjects.target)}
+                  className="btn btn-primary text-xs h-10 px-5 gap-1.5 shadow-sm"
+                >
+                  <span>{ctaProjects.label}</span>
+                  <HiOutlineArrowRight className="text-xs" />
+                </button>
+              )}
+
+              {ctaResume && (
+                <Link
+                  href={ctaResume.url || "/resume"}
+                  className="btn btn-outline text-xs h-10 px-5 gap-1.5"
+                >
+                  <span>{ctaResume.label}</span>
+                </Link>
+              )}
             </div>
 
             {/* Socials */}
-            <div className="flex gap-2.5 justify-center md:justify-start">
-              {socials.map(({ label, href, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 rounded border-3 border-black bg-white flex items-center justify-center text-black hover:bg-slate-50 hover:translate-y-[-1px] active:translate-y-0 transition-transform shadow-[2px_2px_0px_#000]"
-                >
-                  <Icon className="text-lg" />
-                </a>
-              ))}
-            </div>
+            {socials.length > 0 && (
+              <div className="flex gap-2 justify-center md:justify-start pt-3">
+                {socials.map(({ label, href, icon }) => {
+                  const IconComponent = getSocialIcon(icon || label);
+                  return (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="w-9 h-9 rounded-md border border-input bg-background hover:bg-accent text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
+                    >
+                      <IconComponent className="text-lg" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
-          {/* Right Portrait Column */}
-          <div className="flex-shrink-0">
-            <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-xl overflow-hidden border-3 border-black shadow-[6px_6px_0px_#000] bg-white relative transition-transform duration-200 hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000]">
-              <Image
-                src="/Images/rohitBahuguna.jpg"
-                alt="Rohit Bahuguna"
-                fill
-                className="object-cover object-top"
-                priority
-                sizes="(max-w-1024px) 280px, 320px"
-              />
+          {/* Portrait Photo Frame */}
+          {portrait && (
+            <div className="shrink-0 relative">
+              <div className="w-44 h-44 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border border-border shadow-md bg-muted/20 relative">
+                <Image
+                  src={portrait}
+                  alt={`${nameHighlight || ""} ${nameSurname || ""}`.trim() || "Portrait"}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 640px) 176px, 224px"
+                />
+              </div>
             </div>
-          </div>
-
+          )}
         </div>
       </div>
     </section>
   );
-};
-
-export default HeroSection;
-  
+}
