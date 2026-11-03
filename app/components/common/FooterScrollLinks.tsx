@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
-const footerLinks = [
-  { label: "About", id: "about" },
-  { label: "Skills", id: "skills" },
-  { label: "Projects", id: "projects" },
-  { label: "Contact", id: "contact" },
-];
+interface FooterScrollLinksProps {
+  navItems?: Array<{ label: string; target: string; visible?: boolean }>;
+}
 
-const FooterScrollLinks = () => {
-  const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
+export default function FooterScrollLinks({ navItems = [] }: FooterScrollLinksProps) {
+  const visibleItems = navItems.filter((item) => item.visible !== false);
+
+  const scrollTo = (target: string) => {
+    const cleanId = target.replace("#", "");
+    const element = document.getElementById(cleanId);
     if (element) {
       const headerOffset = 70;
       const elementPosition = element.getBoundingClientRect().top;
@@ -20,30 +21,30 @@ const FooterScrollLinks = () => {
         top: offsetPosition,
         behavior: "smooth",
       });
+      return;
+    }
+    if (target.startsWith("/")) {
+      window.location.href = target;
     }
   };
 
   return (
-    <>
-      {footerLinks.map(({ label, id }) => (
+    <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+      {visibleItems.map(({ label, target }) => (
         <button
-          key={id}
-          onClick={() => scrollTo(id)}
-          className="text-[10px] font-black uppercase tracking-wider text-black hover:text-primary transition-colors"
+          key={label}
+          onClick={() => scrollTo(target)}
+          className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           {label}
         </button>
       ))}
-      <a
-        href="https://drive.google.com/file/d/1J0kPC3TBdtLQpOvORigxMQtoilkYzL4H/view?usp=sharing"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-[10px] font-black uppercase tracking-wider text-black hover:text-primary transition-colors"
+      <Link
+        href="/resume"
+        className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
         Resume
-      </a>
-    </>
+      </Link>
+    </div>
   );
-};
-
-export default FooterScrollLinks;
+}
