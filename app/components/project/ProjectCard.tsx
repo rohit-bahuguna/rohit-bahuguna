@@ -4,96 +4,125 @@ import React from "react";
 import Image from "next/image";
 import { HiExternalLink } from "react-icons/hi";
 import { FiGithub } from "react-icons/fi";
-import { Project } from "@/app/utils/projectData";
+import { FaCode } from "react-icons/fa";
 
-interface ProjectCardProps {
-  project: Project;
-  reverse?: boolean;
+export interface ProjectItemData {
+  id?: string;
+  title: string;
+  description: string;
+  tags: string | string[];
+  imageUrl?: string | null;
+  liveUrl?: string | null;
+  githubUrl?: string | null;
+  featured?: boolean;
+  order?: number;
 }
 
-const ProjectCard = ({ project, reverse = false }: ProjectCardProps) => {
-  const { image, heading, tech, githubUrl, liveUrl, description, points } =
-    project;
+interface ProjectCardProps {
+  project: ProjectItemData;
+}
+
+export default function ProjectCard({ project }: ProjectCardProps) {
+  const { imageUrl, title, tags, githubUrl, liveUrl, description, featured } = project;
+
+  let parsedTags: string[] = [];
+  try {
+    parsedTags = Array.isArray(tags) ? tags : typeof tags === "string" ? JSON.parse(tags) : [];
+  } catch {
+    parsedTags = typeof tags === "string" ? tags.split(",").map((t) => t.trim()) : [];
+  }
+
+  const trackClick = (targetType: string, url: string) => {
+    fetch("/api/analytics/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        eventType: "project_click",
+        targetId: `${title} (${targetType})`,
+        targetUrl: url,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  };
 
   return (
-    <div
-      className={`brutal-card p-5 sm:p-6 bg-white flex flex-col ${
-        reverse ? "md:flex-row-reverse" : "md:flex-row"
-      } gap-6 md:gap-8 items-stretch transition-transform duration-200 hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000]`}
-    >
-      {/* Image container */}
-      <div className="md:w-[42%] relative rounded-lg overflow-hidden border-2 border-black min-h-[180px] max-h-[220px] flex-shrink-0 bg-slate-50">
-        <Image
-          src={image}
-          alt={heading}
-          fill
-          className="object-cover"
-          sizes="(max-w-768px) 100vw, 320px"
-        />
+    <div className="rounded-2xl border border-border bg-card overflow-hidden hover:border-foreground/30 hover:shadow-md transition-all duration-200 flex flex-col md:flex-row group">
+      {/* Cover Image Frame */}
+      <div className="md:w-5/12 relative min-h-[200px] md:min-h-[240px] bg-muted/30 border-b md:border-b-0 md:border-r border-border overflow-hidden flex items-center justify-center">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover group-hover:scale-103 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, 360px"
+          />
+        ) : (
+          <div className="text-muted-foreground flex flex-col items-center">
+            <FaCode className="text-4xl" />
+          </div>
+        )}
+
+        {featured && (
+          <span className="absolute top-3 left-3 text-[10px] font-semibold bg-background/90 text-foreground border border-border px-2 py-0.5 rounded-full shadow-xs">
+            Featured
+          </span>
+        )}
       </div>
 
       {/* Content */}
-      <div className="flex-grow flex flex-col justify-between py-0.5">
-        <div>
-          {/* Tech pills */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {tech.map(({ title, Icon }) => (
+      <div className="flex-1 p-6 flex flex-col justify-between space-y-4">
+        <div className="space-y-2.5">
+          {/* Tech Tag Pills */}
+          <div className="flex flex-wrap gap-1.5">
+            {parsedTags.map((tag) => (
               <span
-                key={title}
-                className="mono inline-flex items-center gap-1 text-[9px] font-black text-black px-2.5 py-1 rounded border-2 border-black bg-white shadow-[1.5px_1.5px_0px_#000] uppercase tracking-wide"
+                key={tag}
+                className="text-[10px] font-mono font-medium text-muted-foreground bg-muted px-2.5 py-0.5 rounded-md"
               >
-                <Icon className="text-[10px] text-primary" />
-                {title}
+                {tag}
               </span>
             ))}
           </div>
 
-          <h3 className="text-lg font-black text-black mb-1.5 tracking-tight uppercase">
-            {heading}
+          <h3 className="text-lg font-bold tracking-tight text-foreground">
+            {title}
           </h3>
-          
-          <p className="text-xs sm:text-sm text-slate-800 leading-relaxed mb-4 font-semibold">
+
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3">
             {description}
           </p>
-
-          {/* Key points list */}
-          <ul className="flex flex-col gap-1.5 mb-4">
-            {points.map((point, idx) => (
-              <li
-                key={idx}
-                className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 font-semibold"
-              >
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-black border border-black flex-shrink-0" />
-                {point}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3">
-          <a
-            href={liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-filled !py-1.5 !px-4 !text-[11px] !rounded shadow-[2px_2px_0px_#000]"
-          >
-            <HiExternalLink className="text-xs" />
-            Live Demo
-          </a>
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline !py-1.5 !px-4 !text-[11px] !rounded shadow-[2px_2px_0px_#000]"
-          >
-            <FiGithub className="text-xs" />
-            Source
-          </a>
+        <div className="flex items-center gap-3 pt-2">
+          {liveUrl && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackClick("Live Demo", liveUrl)}
+              className="btn btn-primary text-xs h-8 px-3.5 gap-1.5 shadow-xs"
+            >
+              <HiExternalLink className="text-xs" />
+              <span>Live Demo</span>
+            </a>
+          )}
+
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackClick("Source Code", githubUrl)}
+              className="btn btn-outline text-xs h-8 px-3.5 gap-1.5"
+            >
+              <FiGithub className="text-xs" />
+              <span>Source</span>
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
-};
-
-export default ProjectCard;
+}

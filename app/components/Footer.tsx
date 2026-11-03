@@ -1,52 +1,93 @@
 import React from "react";
-import { AiFillGithub, AiFillLinkedin, AiFillInstagram } from "react-icons/ai";
+import { AiFillGithub, AiFillLinkedin, AiFillInstagram, AiFillTwitterCircle } from "react-icons/ai";
+import { HiOutlineMail } from "react-icons/hi";
 import FooterScrollLinks from "./common/FooterScrollLinks";
+import ThemeToggle from "./ThemeToggle";
 
-const socials = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/rohit--bahuguna", Icon: AiFillLinkedin },
-  { label: "GitHub", href: "https://github.com/rohit-bahuguna", Icon: AiFillGithub },
-  { label: "Instagram", href: "https://www.instagram.com/the_rohit_bahuguna", Icon: AiFillInstagram },
-];
+export interface FooterData {
+  logoImage?: string | null;
+  copyrightText?: string | null;
+  socials?: Array<{ label: string; href: string; icon?: string }>;
+}
 
-const Footer = () => {
+interface FooterProps {
+  data?: FooterData | null;
+  navItems?: Array<{ label: string; target: string; visible?: boolean }>;
+}
+
+function getSocialIcon(iconName?: string) {
+  switch (iconName?.toLowerCase()) {
+    case "aifilllinkedin":
+    case "linkedin":
+      return AiFillLinkedin;
+    case "aifillgithub":
+    case "github":
+      return AiFillGithub;
+    case "aifillinstagram":
+    case "instagram":
+      return AiFillInstagram;
+    case "twitter":
+    case "x":
+      return AiFillTwitterCircle;
+    case "mail":
+    case "email":
+      return HiOutlineMail;
+    default:
+      return AiFillGithub;
+  }
+}
+
+const Footer: React.FC<FooterProps> = ({ data, navItems = [] }) => {
+  const logoImage = data?.logoImage;
+  const copyrightText = data?.copyrightText;
+  const socials = data?.socials || [];
+
   return (
-    <footer className="bg-white border-t-3 border-black text-black">
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-5 pb-6 border-b-2 border-black">
+    <footer className="border-t border-border/40 bg-background text-foreground">
+      <div className="max-w-4xl mx-auto px-6 py-6 md:py-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5 pb-5 border-b border-border/40">
           {/* Brand */}
-          <div className="flex items-center h-10">
-            <img
-              src="/Images/rohitsign.png"
-              alt="Rohit Bahuguna Signature"
-              className="h-full w-auto object-contain brightness-0 contrast-200"
-            />
+          <div className="flex items-center h-8">
+            {logoImage && (
+              <img
+                src={logoImage}
+                alt="Brand Signature"
+                className="h-full w-auto object-contain brightness-0 contrast-200 dark:invert transition-all"
+              />
+            )}
           </div>
 
-          {/* Quick links */}
-          <div className="flex flex-wrap justify-center gap-5">
-            <FooterScrollLinks />
-          </div>
+          {/* Quick links from Database Header Config */}
+          <FooterScrollLinks navItems={navItems} />
 
-          {/* Socials */}
-          <div className="flex gap-2">
-            {socials.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="w-7 h-7 rounded border-2 border-black bg-white hover:bg-slate-50 hover:translate-y-[-1px] active:translate-y-0 flex items-center justify-center transition-all shadow-[1.5px_1.5px_0px_#000]"
-              >
-                <Icon className="text-sm" />
-              </a>
-            ))}
+          {/* Socials & Theme */}
+          <div className="flex items-center gap-2">
+            {socials.map(({ label, href, icon }) => {
+              const IconComponent = getSocialIcon(icon || label);
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-8 h-8 rounded-md border border-border hover:bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <IconComponent className="text-base" />
+                </a>
+              );
+            })}
+            <div className="ml-2 pl-2 border-l border-border/60">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
-        <div className="pt-5 text-center sm:text-left text-[10px] text-slate-600 font-extrabold uppercase">
-          <p>© {new Date().getFullYear()} Rohit Bahuguna. All rights reserved.</p>
-        </div>
+        {copyrightText && (
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+            <p>© {new Date().getFullYear()} {copyrightText}</p>
+          </div>
+        )}
       </div>
     </footer>
   );
