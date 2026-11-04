@@ -59,21 +59,19 @@ export default function AdminSettingsPage() {
 
     setChangingPassword(true);
     try {
-      const res = await fetch("/api/admin/config", {
+      const res = await fetch("/api/admin/password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          key: "settings_password",
-          data: { updated: new Date().toISOString() },
-        }),
+        body: JSON.stringify({ currentPassword, newPassword }),
       });
+      const data = await res.json();
       if (res.ok) {
-        toast.success("Security credentials updated successfully!");
+        toast.success(data.message || "Security credentials updated successfully!");
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
       } else {
-        toast.error("Failed to update password");
+        toast.error(data.error || "Failed to update password");
       }
     } catch {
       toast.error("Error updating credentials");

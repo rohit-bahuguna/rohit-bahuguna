@@ -414,13 +414,13 @@ export default function AdminProjectsPage() {
                 <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={editingProject.featured}
+                    checked={Boolean(editingProject.featured)}
                     onChange={(e) =>
                       setEditingProject({ ...editingProject, featured: e.target.checked })
                     }
-                    className="accent-foreground"
+                    className="accent-foreground w-4 h-4 rounded border-input cursor-pointer"
                   />
-                  Featured project on homepage
+                  <span>Show this project on homepage (Featured)</span>
                 </label>
               </div>
 

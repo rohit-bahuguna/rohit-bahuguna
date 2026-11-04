@@ -13,8 +13,9 @@ export async function GET(request: NextRequest) {
     });
     if (heroConfig?.data) {
       const parsed = JSON.parse(heroConfig.data);
-      if (parsed?.ctaResume?.url && parsed.ctaResume.url !== "/resume") {
-        resumeUrl = parsed.ctaResume.url;
+      const candidate = parsed?.ctaResume?.fileUrl || parsed?.ctaResume?.url;
+      if (candidate && candidate !== "/resume") {
+        resumeUrl = candidate;
       }
     }
   } catch (err) {

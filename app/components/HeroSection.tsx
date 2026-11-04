@@ -112,7 +112,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
 
               {ctaResume && (
                 <Link
-                  href={ctaResume.url || "/resume"}
+                  href="/resume"
                   className="btn btn-outline text-xs h-10 px-5 gap-1.5"
                 >
                   <span>{ctaResume.label}</span>

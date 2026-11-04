@@ -6,6 +6,7 @@ import {
   HiOutlineMenuAlt2,
   HiOutlineExternalLink,
   HiOutlineCloudUpload,
+  HiOutlineEye,
 } from "react-icons/hi";
 
 interface AdminTopBarProps {
@@ -80,15 +81,27 @@ export default function AdminTopBar({
         {/* Light / Dark Mode Toggle */}
         <ThemeToggle />
 
-        {/* Single Gateway to Publish: Saves changes and redirects to Preview */}
+        {/* Preview Drafts in New Tab */}
+        <a
+          href="/?preview=true"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-outline text-xs h-9 px-3 gap-1.5"
+          title="Open preview mode in a new tab"
+        >
+          <HiOutlineEye className="text-sm" />
+          <span className="hidden sm:inline">Preview Drafts</span>
+        </a>
+
+        {/* Publish Live Gateway */}
         <button
           onClick={handlePublishClick}
           disabled={publishing}
           className="btn btn-primary text-xs h-9 px-4 gap-1.5 shadow-sm"
-          title="Save changes and proceed to preview page to publish live"
+          title="Publish all staged changes immediately to live website"
         >
           <HiOutlineCloudUpload className="text-base" />
-          <span>{publishing ? "Saving..." : "Publish Live"}</span>
+          <span>{publishing ? "Publishing..." : "Publish Live"}</span>
         </button>
 
         {/* Public Live Site Link */}
