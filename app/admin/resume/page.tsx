@@ -30,7 +30,11 @@ export default function AdminResumePage() {
         const res = await fetch("/api/admin/config?key=hero&state=draft");
         const json = await res.json();
         if (json.data?.ctaResume) {
-          if (json.data.ctaResume.url) setResumeUrl(json.data.ctaResume.url);
+          if (json.data.ctaResume.fileUrl) {
+            setResumeUrl(json.data.ctaResume.fileUrl);
+          } else if (json.data.ctaResume.url && json.data.ctaResume.url !== "/resume") {
+            setResumeUrl(json.data.ctaResume.url);
+          }
           if (json.data.ctaResume.label) setLabel(json.data.ctaResume.label);
         }
       } catch {
@@ -52,7 +56,8 @@ export default function AdminResumePage() {
 
       currentHero.ctaResume = {
         label,
-        url: resumeUrl,
+        url: "/resume", // Public destination is always the in-app viewer
+        fileUrl: resumeUrl, // The actual storage location
         target: "_self", // opens in-app viewer
       };
 

@@ -74,17 +74,24 @@ export default function AdminShell({
     setTopPublishing(true);
     try {
       if (isDirty && onSave) {
-        toast.loading("Saving current draft...", { id: "prep-preview", duration: 3000 });
+        toast.loading("Saving current draft...", { id: "publish-flow" });
         await onSave();
-        toast.success("Draft saved! Redirecting to Preview page...", { id: "prep-preview", duration: 4000 });
-      } else {
-        toast.success("Redirecting to Preview page...", { duration: 3000 });
       }
-      setTimeout(() => {
-        window.location.href = "/?preview=true";
-      }, 600);
+      toast.loading("Publishing all drafts to Live site...", { id: "publish-flow" });
+      const res = await fetch("/api/publish", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to publish live", { id: "publish-flow" });
+        return;
+      }
+      toast.success("All changes are now LIVE on your website!", {
+        id: "publish-flow",
+        duration: 5000,
+      });
+      router.refresh();
     } catch {
-      toast.error("Failed to save changes before redirecting", { id: "prep-preview" });
+      toast.error("Network error publishing changes", { id: "publish-flow" });
+    } finally {
       setTopPublishing(false);
     }
   };

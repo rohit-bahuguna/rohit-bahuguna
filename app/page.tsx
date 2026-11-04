@@ -32,7 +32,7 @@ export default async function Home({ searchParams }: PageProps) {
   const queryState = isPreview ? "draft" : "live";
 
   // Fetch all live or draft content concurrently
-  const [configs, projects, skills] = await Promise.all([
+  const [configs, allProjects, skills] = await Promise.all([
     prisma.siteConfig.findMany({
       where: { state: queryState },
     }),
@@ -45,6 +45,10 @@ export default async function Home({ searchParams }: PageProps) {
       orderBy: { order: "asc" },
     }),
   ]);
+
+  // Only display projects marked as featured on the homepage (fall back to all if none are featured)
+  const featuredProjects = allProjects.filter((p) => p.featured);
+  const projects = featuredProjects.length > 0 ? featuredProjects : allProjects;
 
   // Convert array of configs to a lookup object
   const configMap: Record<string, any> = {};

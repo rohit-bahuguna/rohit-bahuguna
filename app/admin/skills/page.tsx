@@ -120,12 +120,17 @@ export default function AdminSkillsPage() {
     }
   };
 
+  const filteredSkills =
+    activeCategory === "All"
+      ? skills
+      : skills.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
+
   const handleReorder = async (index: number, direction: "up" | "down") => {
     const targetIdx = direction === "up" ? index - 1 : index + 1;
-    if (targetIdx < 0 || targetIdx >= skills.length) return;
+    if (targetIdx < 0 || targetIdx >= filteredSkills.length) return;
 
-    const current = skills[index];
-    const target = skills[targetIdx];
+    const current = filteredSkills[index];
+    const target = filteredSkills[targetIdx];
 
     try {
       await Promise.all([
@@ -145,11 +150,6 @@ export default function AdminSkillsPage() {
       toast.error("Failed to reorder skills");
     }
   };
-
-  const filteredSkills =
-    activeCategory === "All"
-      ? skills
-      : skills.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
 
   return (
     <AdminShell title="Technical Skills">

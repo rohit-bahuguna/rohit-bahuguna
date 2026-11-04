@@ -71,7 +71,7 @@ export default async function ResumePage() {
       <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-8 flex flex-col">
         <div className="flex-1 w-full rounded-xl border border-border bg-card shadow-lg overflow-hidden min-h-[80vh] flex flex-col">
           <iframe
-            src={safeIframeSrc}
+            src="/api/resume/view"
             title="Rohit Bahuguna Resume"
             className="w-full flex-1 border-0 rounded-xl"
             style={{ minHeight: "85vh" }}
